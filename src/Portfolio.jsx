@@ -1,0 +1,112 @@
+// @ts-nocheck
+import React, {
+  useRef,
+  Suspense,
+  useState,
+  useEffect,
+  useLayoutEffect
+} from 'react'
+import { useThree, extend } from '@react-three/fiber'
+import {
+  Text,
+  Html,
+  ContactShadows,
+  useGLTF,
+  Environment,
+  Float,
+  PresentationControls,
+  useProgress
+} from '@react-three/drei'
+import { useApp } from './store/app'
+
+export default function Portfolio() {
+  const phone = useGLTF('phone.gltf')
+  const [windowWidth, setWindowWidth] = useState(0)
+  const [scale, setScale] = useState(2.5)
+  const [positionY, setPositionY] = useState(-4)
+
+  useLayoutEffect(() => {
+    setWindowWidth(window.innerWidth)
+  }, [])
+
+  useEffect(() => {
+    if (windowWidth <= 600) {
+      setScale(1.5)
+      setPositionY(-3)
+    }
+  }, [windowWidth])
+  const { progress } = useProgress()
+
+  return (
+    <>
+      <color attach='background' args={['#999']} />
+
+      <Suspense
+        fallback={
+          <Text
+            font='./silkscreen-v1-latin_latin-ext-regular.woff'
+            fontSize={windowWidth >= 600 ? 1 : 0.5}
+            position={[0, 0, 0]}
+            rotation-y={0.45}
+            maxWidth={2}
+          >
+            Loading {progress.toFixed(2)} %...
+          </Text>
+        }
+      >
+        <Environment preset='studio' intensity={0.5} />
+        <ContactShadows
+          color='#241a1a'
+          position-y={-4}
+          opacity={0.4}
+          scale={5}
+          blur={5}
+        ></ContactShadows>
+        <PresentationControls
+          global={true}
+          rotation={[0.13, 0.1, 0]}
+          polar={[-0.8, 0.8]}
+          azimuth={[-1, 0.75]}
+          config={{ mass: 2, tension: 400 }}
+          snap={{ mass: 4, tension: 400 }}
+        >
+          <Float rotationIntensity={0.4}>
+            <rectAreaLight
+              width={2.5}
+              height={1.65}
+              intensity={65}
+              color={'#ff6900'}
+              rotation={[-0.1, Math.PI, 0]}
+              position={[0, 0.65, -1.15]}
+            />
+            <primitive
+              object={phone.scene}
+              scale={scale}
+              position-y={positionY}
+              rotation-x={-0.256}
+            >
+              <Html
+                transform
+                wrapperClass='htmlScreen'
+                distanceFactor={1.17}
+                position={[0.14, 1.3, 0.01]}
+              >
+                <iframe src='https://portfolio.zeabur.app/' />
+              </Html>
+            </primitive>
+            <Text
+              font='./silkscreen-v1-latin_latin-ext-regular.woff'
+              fontSize={0.5}
+              position={windowWidth >= 600 ? [3.5, 0.75, 0.75] : [1, 3, 0]}
+              rotation-y={windowWidth >= 600 ? -0.25 : 0}
+              maxWidth={2}
+            >
+              Allen Shih
+            </Text>
+          </Float>
+        </PresentationControls>
+      </Suspense>
+    </>
+  )
+}
+useGLTF.preload('phone.gltf')
