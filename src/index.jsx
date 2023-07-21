@@ -1,15 +1,23 @@
 // @ts-nocheck
 import { Canvas } from '@react-three/fiber'
 import * as THREE from 'three'
-import { StrictMode } from 'react'
+import { StrictMode, useLayoutEffect } from 'react'
 import { Leva } from 'leva'
 import { Perf } from 'r3f-perf'
 
 import ReactDOM from 'react-dom/client'
 import Portfolio from './Portfolio'
 import './style.css'
-
+import { useApp } from './store/app'
+import { AppProvider } from './store/app'
 const App = () => {
+  const [, appDispatch] = useApp()
+  useLayoutEffect(() => {
+    appDispatch({
+      type: 'patch',
+      windowWidth: window.innerWidth
+    })
+  }, [])
   return (
     <>
       <StrictMode>
@@ -20,6 +28,8 @@ const App = () => {
             outputColorSpace: THREE.SRGBColorSpaces
           }}
           flat
+          shadows
+          dpr={[1, 2]}
           camera={{
             fov: 45,
             near: 0.1,
@@ -34,4 +44,8 @@ const App = () => {
   )
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <AppProvider>
+    <App />
+  </AppProvider>
+)
