@@ -18,7 +18,9 @@ Phone and a little man (or spirit?)
 
    ![Portfolio Showcase](https://github.com/eepson123tw/ph-portfolio/assets/75103330/7502799d-959b-46b7-964e-fcc21b22961f)
 
-4. Finally, there is a "Contact Me" page where you can get in touch with me.
+4. Finally, there is a "Contact Me" page where you can get in touch with me.It is a real feature which you can send me some message.
+![image](https://github.com/eepson123tw/ph-portfolio/assets/75103330/7acd076e-6d74-4ba5-8d62-fba9dba78f1a)
+
 
 ## Issues
 - I encountered an error due to the GPU limit of the browser. It restricted me to render only 16 contexts, which made it necessary to remove some features. I hope that in the future, browsers will allow more contexts. [Link to Issue](https://stackoverflow.com/questions/59140439/allowing-more-webgl-contexts)
