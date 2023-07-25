@@ -29,6 +29,7 @@ const App = () => {
           }}
           flat
           shadows
+          frameloop={window.innerWidth >= 600 ? 'demand' : 'always'}
           dpr={[1, 2]}
           camera={{
             fov: 45,
